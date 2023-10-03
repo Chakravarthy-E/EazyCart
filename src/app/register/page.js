@@ -38,7 +38,7 @@ export default function Register() {
                       />
                     ) : null
                   )}
-                  <button className="bg-black  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                  <button className="bg-black w-full  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
                     Register
                   </button>
                 </div>
