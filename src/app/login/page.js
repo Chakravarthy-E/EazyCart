@@ -3,9 +3,52 @@
 import { loginFormControls } from "@/utils";
 import InputComponent from "@/components/FormElements/inputComponent";
 import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { login } from "@/services/login";
+import { GlobalContext } from "@/context";
+import Cookies from "js-cookie";
+
+const initialFormData = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
   const router = useRouter();
+  const [formData, setFormData] = useState(initialFormData);
+
+  const { isAuthUser, setIsAuthUser, user, setUser } =
+    useContext(GlobalContext);
+
+  function isValidForm() {
+    return formData &&
+      formData.email &&
+      formData.email.trim() !== "" &&
+      formData.password &&
+      formData.password.trim() !== ""
+      ? true
+      : false;
+  }
+
+  async function handleLogin() {
+    const response = await login(formData);
+    console.log(response);
+    if (response.success) {
+      setIsAuthUser(true);
+      setUser(response?.finalData?.user);
+      setFormData(initialFormData);
+      Cookies.set("token", response?.finalData?.token);
+      localStorage.setItem("user", JSON.stringify(response?.finalData?.user));
+    } else {
+      setIsAuthUser(false);
+    }
+  }
+
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
+
+  // console.log(isAuthUser, user);
 
   return (
     <div className="bg-white relative">
@@ -24,10 +67,22 @@ const Login = () => {
                       type={controlItem.type}
                       placeholder={controlItem.placeholder}
                       label={controlItem.label}
+                      key={controlItem.id}
+                      value={formData[controlItem.id]}
+                      onChange={(event) => {
+                        setFormData({
+                          ...formData,
+                          [controlItem.id]: event.target.value,
+                        });
+                      }}
                     />
                   ) : null
                 )}
-                <button className="bg-black w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                <button
+                  className="  disabled:opacity-50 bg-black w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+                  disabled={!isValidForm()}
+                  onClick={handleLogin}
+                >
                   Login
                 </button>
                 <div className="flex flex-col gap-2 ">
