@@ -7,7 +7,11 @@ export const GlobalContext = createContext(null);
 
 export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
-  const [commonLoader, setCommonLoader] = useState(false);
+  const [pageLevelLoader, setpageLevelLoader] = useState(false);
+  const [componentLabelLoader, setcomponentLabelLoader] = useState({
+    loading: false,
+    id: "",
+  });
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -27,13 +31,16 @@ export default function GlobalState({ children }) {
     <GlobalContext.Provider
       value={{
         showNavModal,
-        commonLoader,
-        setCommonLoader,
+        pageLevelLoader,
+        setpageLevelLoader,
         setShowNavModal,
         isAuthUser,
         setIsAuthUser,
         user,
         setUser,
+        componentLabelLoader,
+        setcomponentLabelLoader,
+        
       }}
     >
       {children}

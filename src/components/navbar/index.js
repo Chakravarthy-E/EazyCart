@@ -4,13 +4,10 @@ import { GlobalContext } from "@/context";
 import { adminNavOptions, navOptions, styles } from "@/utils";
 import { Fragment, useContext } from "react";
 import CommonModel from "../commonModel";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
-const isAdminView = true;
-const isAuthUser = true;
-
-const user = {
-  role: "admin",
-};
+const isAdminView = false;
 
 function NavItems({ isModalView = false }) {
   return (
@@ -49,6 +46,18 @@ function NavItems({ isModalView = false }) {
 
 export default function Navbar() {
   const { showNavModal, setShowNavModal } = useContext(GlobalContext);
+  const { user, isAuthUser, setIsAuthUser, setUser } =
+    useContext(GlobalContext);
+
+  const router = useRouter();
+
+  function handleLogout() {
+    setIsAuthUser(false);
+    setUser(null);
+    Cookies.remove("token");
+    localStorage.clear();
+    router.push("/");
+  }
 
   return (
     <>
@@ -82,11 +91,17 @@ export default function Navbar() {
               )
             ) : null}
             {isAuthUser ? (
-              <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button
+                onClick={handleLogout}
+                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
                 Logout
               </button>
             ) : (
-              <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button
+                onClick={() => router.push("/login")}
+                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
                 Login
               </button>
             )}
