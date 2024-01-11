@@ -2,11 +2,13 @@
 
 import SelectComponent from "@/components/FormElements/SelectComponent";
 import InputComponent from "@/components/FormElements/inputComponent";
+import ComponentLabelLoader from "@/components/loader/componentLabel";
+import { GlobalContext } from "@/context";
 import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
-import { useState } from "react";
-
-const isRegistered = false;
+import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const initialFormData = {
   name: "",
@@ -17,7 +19,13 @@ const initialFormData = {
 
 export default function Register() {
   const [formData, setFormData] = useState(initialFormData);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const { pageLevelLoader, setpageLevelLoader, isAuthUser } =
+    useContext(GlobalContext);
+
   console.log(formData);
+
+  const router = useRouter();
 
   function isFormvalid() {
     return formData &&
@@ -32,9 +40,29 @@ export default function Register() {
   }
 
   async function handleRegisterOnSubmit() {
+    setpageLevelLoader(true);
     const data = await registerNewUser(formData);
+
+    if (data.success) {
+      toast.success(data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setIsRegistered(true);
+      setpageLevelLoader(false);
+      setFormData(initialFormData);
+    } else {
+      toast.error(data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setpageLevelLoader(false);
+      setFormData(initialFormData);
+    }
     console.log(data);
   }
+
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
   return (
     <div className="bg-white relative">
       <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto  xl:px-5 lg:flex-row ">
@@ -85,7 +113,16 @@ export default function Register() {
                     disabled={!isFormvalid()}
                     onClick={handleRegisterOnSubmit}
                   >
-                    Register
+                    {" "}
+                    {pageLevelLoader ? (
+                      <ComponentLabelLoader
+                        text={"Registering"}
+                        color={"#ffffff"}
+                        loading={pageLevelLoader}
+                      />
+                    ) : (
+                      "Register"
+                    )}
                   </button>
                 </div>
               )}

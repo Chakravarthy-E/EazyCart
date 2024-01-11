@@ -1,15 +1,15 @@
 "use client";
 
 import { GlobalContext } from "@/context";
-import { adminNavOptions, navOptions, styles } from "@/utils";
-import { Fragment, useContext } from "react";
+import { adminNavOptions, navOptions } from "@/utils";
+import { Fragment, useContext, useEffect } from "react";
 import CommonModel from "../commonModel";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const isAdminView = false;
 
-function NavItems({ isModalView = false }) {
+function NavItems({ isModalView = false, isAdminView, router }) {
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
@@ -27,6 +27,7 @@ function NavItems({ isModalView = false }) {
               <li
                 className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
+                onClick={() => router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -35,6 +36,7 @@ function NavItems({ isModalView = false }) {
               <li
                 className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
+                onClick={() => router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -50,6 +52,7 @@ export default function Navbar() {
     useContext(GlobalContext);
 
   const router = useRouter();
+  const pathName = usePathname();
 
   function handleLogout() {
     setIsAuthUser(false);
@@ -63,15 +66,21 @@ export default function Navbar() {
     <>
       <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <div className="flex items-center cursor-pointer">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => router.push("/")}
+          >
             <span className="self-center  text-2xl font-semibold whitespace-normal">
               EazyCart
             </span>
           </div>
           <div className="flex md:order-2 gap-2">
-            {isAdminView && isAuthUser ? (
+            {!isAdminView && isAuthUser ? (
               <Fragment>
-                <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => router.push("/account")}
+                >
                   Account
                 </button>
                 <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -81,11 +90,17 @@ export default function Navbar() {
             ) : null}
             {user?.role === "admin" ? (
               isAdminView ? (
-                <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => router.push("/")}
+                >
                   Client View
                 </button>
               ) : (
-                <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => router.push("/admin-view")}
+                >
                   Admin View
                 </button>
               )

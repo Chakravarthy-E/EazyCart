@@ -7,6 +7,10 @@ import { useContext, useEffect, useState } from "react";
 import { login } from "@/services/login";
 import { GlobalContext } from "@/context";
 import Cookies from "js-cookie";
+import ComponentLabelLoader from "@/components/loader/componentLabel";
+import Notification from "@/components/notification/notication";
+import { toast } from "react-toastify";
+import { data } from "autoprefixer";
 
 const initialFormData = {
   email: "",
@@ -17,8 +21,14 @@ const Login = () => {
   const router = useRouter();
   const [formData, setFormData] = useState(initialFormData);
 
-  const { isAuthUser, setIsAuthUser, user, setUser } =
-    useContext(GlobalContext);
+  const {
+    isAuthUser,
+    setIsAuthUser,
+    user,
+    setUser,
+    componentLabelLoader,
+    setcomponentLabelLoader,
+  } = useContext(GlobalContext);
 
   function isValidForm() {
     return formData &&
@@ -31,16 +41,24 @@ const Login = () => {
   }
 
   async function handleLogin() {
+    setcomponentLabelLoader({ loading: true, id: "" });
     const response = await login(formData);
-    console.log(response);
     if (response.success) {
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       setIsAuthUser(true);
       setUser(response?.finalData?.user);
       setFormData(initialFormData);
       Cookies.set("token", response?.finalData?.token);
       localStorage.setItem("user", JSON.stringify(response?.finalData?.user));
+      setcomponentLabelLoader({ loading: false, id: "" });
     } else {
+      toast.error(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       setIsAuthUser(false);
+      setcomponentLabelLoader({ loading: false, id: "" });
     }
   }
 
@@ -79,11 +97,21 @@ const Login = () => {
                   ) : null
                 )}
                 <button
-                  className="  disabled:opacity-50 bg-black w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+                  className="  disabled:opacity-50 text-center bg-black w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
                   disabled={!isValidForm()}
                   onClick={handleLogin}
                 >
-                  Login
+                  {componentLabelLoader && componentLabelLoader.loading ? (
+                    <ComponentLabelLoader
+                      text={"Logging In"}
+                      color={"#FFFFF"}
+                      loading={
+                        componentLabelLoader && componentLabelLoader.loading
+                      }
+                    />
+                  ) : (
+                    "Login"
+                  )}
                 </button>
                 <div className="flex flex-col gap-2 ">
                   <p>New to website ?</p>
@@ -99,6 +127,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 };
