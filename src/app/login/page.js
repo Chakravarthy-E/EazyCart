@@ -10,7 +10,6 @@ import Cookies from "js-cookie";
 import ComponentLabelLoader from "@/components/loader/componentLabel";
 import Notification from "@/components/notification/notication";
 import { toast } from "react-toastify";
-import { data } from "autoprefixer";
 
 const initialFormData = {
   email: "",

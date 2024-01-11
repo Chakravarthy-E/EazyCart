@@ -25,7 +25,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
         {isAdminView
           ? adminNavOptions.map((item) => (
               <li
-                className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
+                className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 cursor-pointer rounded md:p-0"
                 key={item.id}
                 onClick={() => router.push(item.path)}
               >
@@ -34,7 +34,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
             ))
           : navOptions.map((item) => (
               <li
-                className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
+                className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 cursor-pointer rounded md:p-0"
                 key={item.id}
                 onClick={() => router.push(item.path)}
               >
@@ -62,6 +62,7 @@ export default function Navbar() {
     router.push("/");
   }
 
+  const isAdminView = pathName.includes("admin-view");
   return (
     <>
       <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
@@ -144,12 +145,18 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-          <NavItems isModal={false} />
+          <NavItems router={router} isAdminView={isAdminView} />
         </div>
       </nav>
       <CommonModel
         showModalTitle={false}
-        mainContent={<NavItems isModalView={true} />}
+        mainContent={
+          <NavItems
+            router={router}
+            isModalView={true}
+            isAdminView={isAdminView}
+          />
+        }
         show={showNavModal}
         setShow={setShowNavModal}
       />
