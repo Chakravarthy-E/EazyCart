@@ -1,5 +1,7 @@
 // add a new Product service
 
+import Cookies from "js-cookie";
+
 export const addNewProduct = async (formData) => {
   try {
     const response = await fetch("/api/admin/add-product", {
