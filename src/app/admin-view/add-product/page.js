@@ -6,7 +6,7 @@ import InputComponent from "@/components/FormElements/inputComponent";
 import ComponentLabelLoader from "@/components/loader/componentLabel";
 import Notification from "@/components/notification/notication";
 import { GlobalContext } from "@/context";
-import { addNewProduct } from "@/services/product/product";
+import { addNewProduct, updateAproduct } from "@/services/product/product";
 import {
   AvailableSizes,
   adminAddProductformControls,
@@ -21,7 +21,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const app = initializeApp(firebaseConfig);
@@ -69,10 +69,15 @@ const intialFormData = {
 export default function AdminAddNewProduct() {
   const [formData, setFormData] = useState(intialFormData);
 
-  const { componentLabelLoader, setcomponentLabelLoader } =
-    useContext(GlobalContext);
+  const {
+    componentLabelLoader,
+    setcomponentLabelLoader,
+    currentUpdatedProduct,
+    setCurrentUpdatedProduct,
+  } = useContext(GlobalContext);
 
-    const router = useRouter()
+  console.log(currentUpdatedProduct);
+  const router = useRouter();
 
   const handleImage = async (event) => {
     console.log(event.target.files);
@@ -103,7 +108,10 @@ export default function AdminAddNewProduct() {
   // console.log(formData);
   const handleAddProduct = async () => {
     setcomponentLabelLoader({ loading: true, id: "" });
-    const response = await addNewProduct(formData);
+    const response =
+      currentUpdatedProduct !== null
+        ? await updateAproduct(formData)
+        : await addNewProduct(formData);
     console.log(response);
 
     if (response.success) {
@@ -112,9 +120,9 @@ export default function AdminAddNewProduct() {
         position: toast.POSITION.TOP_RIGHT,
       });
       setFormData(intialFormData);
-
+      setCurrentUpdatedProduct(null);
       setTimeout(() => {
-        router.push("/admin-view/all-products")
+        router.push("/admin-view/all-products");
       }, 1000);
     } else {
       setcomponentLabelLoader({ loading: true, id: "" });
@@ -124,6 +132,10 @@ export default function AdminAddNewProduct() {
       setFormData(intialFormData);
     }
   };
+
+  useEffect(() => {
+    if (currentUpdatedProduct !== null) setFormData(currentUpdatedProduct);
+  }, [currentUpdatedProduct]);
 
   return (
     <>
@@ -178,10 +190,16 @@ export default function AdminAddNewProduct() {
             >
               {componentLabelLoader && componentLabelLoader.loading ? (
                 <ComponentLabelLoader
-                  text={"Adding Product"}
+                  text={
+                    currentUpdatedProduct !== null
+                      ? "Updating Product"
+                      : "Adding Product"
+                  }
                   color={"#FFFFF"}
                   loading={componentLabelLoader && componentLabelLoader.loading}
                 />
+              ) : currentUpdatedProduct !== null ? (
+                "Update Product"
               ) : (
                 "Add Product"
               )}

@@ -35,3 +35,36 @@ export const getAllAdminProducts = async () => {
     console.error(error);
   }
 };
+
+export const updateAproduct = async (formData) => {
+  try {
+    const response = await fetch("/api/admin/update-product", {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteAproduct = async (id) => {
+  try {
+    const response = await fetch(`/api/admin/delete-product?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};

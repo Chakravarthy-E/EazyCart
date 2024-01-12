@@ -1,9 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
 import ProductButton from "./ProductButtons/productButtons";
 import ProductTile from "./ProductTile/productTile";
+import { useRouter } from "next/navigation";
+import Notification from "../notification/notication";
 
 export default function CommonListing({ data }) {
+  const router = useRouter();
+  useEffect(() => {
+    router.refresh();
+  }, []);
+
   return (
     <section className=" bg-white py-12 sm:py-16">
       <div className="mx-auto max-w-screen-xl px-4  sm:px-6 lg:px-8">
@@ -21,6 +29,7 @@ export default function CommonListing({ data }) {
             : null}
         </div>
       </div>
+      <Notification />
     </section>
   );
 }
