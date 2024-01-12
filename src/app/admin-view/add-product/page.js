@@ -3,6 +3,10 @@
 import SelectComponent from "@/components/FormElements/SelectComponent";
 import TileComponent from "@/components/FormElements/TileComponent/tileComponent";
 import InputComponent from "@/components/FormElements/inputComponent";
+import ComponentLabelLoader from "@/components/loader/componentLabel";
+import Notification from "@/components/notification/notication";
+import { GlobalContext } from "@/context";
+import { addNewProduct } from "@/services/product/product";
 import {
   AvailableSizes,
   adminAddProductformControls,
@@ -16,7 +20,9 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, firebaseStroageURL);
@@ -63,6 +69,11 @@ const intialFormData = {
 export default function AdminAddNewProduct() {
   const [formData, setFormData] = useState(intialFormData);
 
+  const { componentLabelLoader, setcomponentLabelLoader } =
+    useContext(GlobalContext);
+
+    const router = useRouter()
+
   const handleImage = async (event) => {
     console.log(event.target.files);
     const extractImageUrl = await helperForUploadingImageToFireBase(
@@ -89,7 +100,31 @@ export default function AdminAddNewProduct() {
       sizes: copySizes,
     });
   };
-  console.log(formData);
+  // console.log(formData);
+  const handleAddProduct = async () => {
+    setcomponentLabelLoader({ loading: true, id: "" });
+    const response = await addNewProduct(formData);
+    console.log(response);
+
+    if (response.success) {
+      setcomponentLabelLoader({ loading: false, id: "" });
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setFormData(intialFormData);
+
+      setTimeout(() => {
+        router.push("/admin-view/all-products")
+      }, 1000);
+    } else {
+      setcomponentLabelLoader({ loading: true, id: "" });
+      toast.error(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setFormData(intialFormData);
+    }
+  };
+
   return (
     <>
       <div className="w-full mt-5 mr-0 ml-0 relative">
@@ -137,11 +172,23 @@ export default function AdminAddNewProduct() {
                 />
               ) : null
             )}
-            <button className="inline-flex w-full items-center justify-center bg-black px-6 py-3 text-white rounded-lg tracking-wide">
-              Add Product
+            <button
+              className="inline-flex w-full items-center justify-center bg-black px-6 py-3 text-white rounded-lg tracking-wide"
+              onClick={handleAddProduct}
+            >
+              {componentLabelLoader && componentLabelLoader.loading ? (
+                <ComponentLabelLoader
+                  text={"Adding Product"}
+                  color={"#FFFFF"}
+                  loading={componentLabelLoader && componentLabelLoader.loading}
+                />
+              ) : (
+                "Add Product"
+              )}
             </button>
           </div>
         </div>
+        <Notification />
       </div>
     </>
   );
