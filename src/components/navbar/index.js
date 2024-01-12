@@ -7,7 +7,6 @@ import CommonModel from "../commonModel";
 import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 
-const isAdminView = false;
 
 function NavItems({ isModalView = false, isAdminView, router }) {
   return (
@@ -47,12 +46,25 @@ function NavItems({ isModalView = false, isAdminView, router }) {
 }
 
 export default function Navbar() {
-  const { showNavModal, setShowNavModal } = useContext(GlobalContext);
+  const {
+    showNavModal,
+    setShowNavModal,
+    currentUpdatedProduct,
+    setCurrentUpdatedProduct,
+  } = useContext(GlobalContext);
   const { user, isAuthUser, setIsAuthUser, setUser } =
     useContext(GlobalContext);
 
   const router = useRouter();
   const pathName = usePathname();
+
+  useEffect(() => {
+    if (
+      pathName !== "/admin-view/add-product" &&
+      currentUpdatedProduct !== null
+    )  setCurrentUpdatedProduct(null);
+    
+  }, [pathName]);
 
   function handleLogout() {
     setIsAuthUser(false);

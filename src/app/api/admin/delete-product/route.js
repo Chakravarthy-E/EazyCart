@@ -4,22 +4,27 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req) {
+export async function DELETE(req) {
   try {
     await connectToDB();
-
-    const extractAllProducts = await Product.find({});
-
-    if (extractAllProducts) {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({
+        success: false,
+        message: "Product id is required",
+      });
+    }
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (deletedProduct) {
       return NextResponse.json({
         success: true,
-        data: extractAllProducts,
+        message: "Product is deleted Successfully",
       });
     } else {
       return NextResponse.json({
         success: false,
-        status: 204,
-        message: "No Products found",
+        message: "Failed to delete Product",
       });
     }
   } catch (error) {
