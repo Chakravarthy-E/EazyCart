@@ -15,9 +15,10 @@ export default function GlobalState({ children }) {
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const [cartitems, setCartitems] = useState([]);
 
   useEffect(() => {
-    // console.log(Cookies.get("token"));
     if (Cookies.get("token") !== undefined) {
       setIsAuthUser(true);
       const userData = JSON.parse(localStorage.getItem("user")) || {};
@@ -43,6 +44,10 @@ export default function GlobalState({ children }) {
         setcomponentLabelLoader,
         currentUpdatedProduct,
         setCurrentUpdatedProduct,
+        showCartModal,
+        setShowCartModal,
+        cartitems,
+        setCartitems,
       }}
     >
       {children}

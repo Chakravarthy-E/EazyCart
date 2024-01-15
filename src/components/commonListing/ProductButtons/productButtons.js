@@ -16,6 +16,8 @@ export default function ProductButton({ item }) {
     setcomponentLabelLoader,
     componentLabelLoader,
     user,
+    showCartModal,
+    setShowCartModal,
   } = useContext(GlobalContext);
 
   const router = useRouter();
@@ -51,11 +53,13 @@ export default function ProductButton({ item }) {
         position: toast.POSITION.TOP_RIGHT,
       });
       setcomponentLabelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
     } else {
       toast.success(response.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
       setcomponentLabelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
     }
     console.log(response);
   }
