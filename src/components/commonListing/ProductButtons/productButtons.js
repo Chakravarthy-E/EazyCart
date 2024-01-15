@@ -2,6 +2,7 @@
 
 import ComponentLabelLoader from "@/components/loader/componentLabel";
 import { GlobalContext } from "@/context";
+import { addToCart } from "@/services/cart/cart";
 import { deleteAproduct } from "@/services/product/product";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext } from "react";
@@ -14,6 +15,7 @@ export default function ProductButton({ item }) {
     setCurrentUpdatedProduct,
     setcomponentLabelLoader,
     componentLabelLoader,
+    user,
   } = useContext(GlobalContext);
 
   const router = useRouter();
@@ -35,6 +37,28 @@ export default function ProductButton({ item }) {
       setcomponentLabelLoader({ loading: true, id: item._id });
     }
   };
+
+  async function handleAddToCart(getItem) {
+    setcomponentLabelLoader({ loading: true, id: getItem._id });
+
+    const response = await addToCart({
+      productID: getItem._id,
+      userID: user._id,
+    });
+
+    if (response.success) {
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setcomponentLabelLoader({ loading: false, id: "" });
+    } else {
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setcomponentLabelLoader({ loading: false, id: "" });
+    }
+    console.log(response);
+  }
 
   return isAdminView ? (
     <>
@@ -66,8 +90,21 @@ export default function ProductButton({ item }) {
     </>
   ) : (
     <>
-      <button className=" mt-1.5 w-full  text-white flex justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide">
-        Add to Cart
+      <button
+        className=" mt-1.5 w-full  text-white flex justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide"
+        onClick={() => handleAddToCart(item)}
+      >
+        {componentLabelLoader &&
+        componentLabelLoader.loading &&
+        componentLabelLoader.id === item._id ? (
+          <ComponentLabelLoader
+            text={"Adding to Cart"}
+            color={"#FFFFF"}
+            loading={componentLabelLoader && componentLabelLoader.loading}
+          />
+        ) : (
+          "  Add to Cart"
+        )}
       </button>
     </>
   );
