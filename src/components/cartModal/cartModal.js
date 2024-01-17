@@ -5,6 +5,7 @@ import CommonModel from "../commonModel";
 import { GlobalContext } from "@/context";
 import { deleteFromCart, getAllCartItems } from "@/services/cart/cart";
 import { toast } from "react-toastify";
+import DotLoader from "../DotLoader/DotLoader";
 export default function CartModal() {
   const {
     showCartModal,
@@ -91,13 +92,7 @@ export default function CartModal() {
                       {componentLabelLoader &&
                       componentLabelLoader.loading &&
                       componentLabelLoader.id === cartItem._id ? (
-                        <componentLabelLoader
-                          text={"Removing"}
-                          color={"#00000"}
-                          loading={
-                            componentLabelLoader && componentLabelLoader.loading
-                          }
-                        />
+                        <DotLoader />
                       ) : (
                         "Remove"
                       )}
