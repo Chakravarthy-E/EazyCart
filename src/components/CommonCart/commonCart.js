@@ -1,6 +1,13 @@
 "use client";
 
-export default function CommonCart({ cartItems = [] }) {
+import DotLoader from "../DotLoader/DotLoader";
+import ComponentLabelLoader from "../loader/componentLabel";
+
+export default function CommonCart({
+  cartItems = [],
+  handleDeleteCartItem,
+  componentLabelLoader,
+}) {
   return (
     <section className=" h-screen bg-gray-100">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,15 +53,26 @@ export default function CommonCart({ cartItems = [] }) {
                             <button
                               type="button"
                               className=" font-medium text-yellow-800 sm:order-2"
+                              onClick={() => handleDeleteCartItem(cartItem._id)}
                             >
-                              Remove
+                              {componentLabelLoader &&
+                              componentLabelLoader.loading &&
+                              componentLabelLoader.id === cartItem._id ? (
+                                <DotLoader />
+                              ) : (
+                                "Remove"
+                              )}
                             </button>
                           </div>
                         </div>
                       </li>
                     ))}
                   </ul>
-                ) : null}
+                ) : (
+                  <h1 className="text-center font-bold text-lg">
+                    You cart is empty
+                  </h1>
+                )}
               </div>
               <div className="mt-6  border-t border-b py-2">
                 <div className=" flex items-center justify-between">
@@ -87,7 +105,10 @@ export default function CommonCart({ cartItems = [] }) {
                   </p>
                 </div>
                 <div className="mt-5 text-center">
-                  <button className=" group inline-flex w-full items-center justify-center bg-black text-white px-6 py-4 text-lg font-medium uppercase">
+                  <button
+                    disabled={cartItems && cartItems.length === 0}
+                    className=" disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black text-white px-6 py-4 text-lg font-medium uppercase"
+                  >
                     Checkout
                   </button>
                 </div>

@@ -8,7 +8,6 @@ import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 import CartModal from "../cartModal/cartModal";
 
-
 function NavItems({ isModalView = false, isAdminView, router }) {
   return (
     <div
@@ -48,14 +47,17 @@ function NavItems({ isModalView = false, isAdminView, router }) {
 
 export default function Navbar() {
   const {
+    user,
+    isAuthUser,
+    setIsAuthUser,
+    setUser,
     showNavModal,
     setShowNavModal,
     currentUpdatedProduct,
     setCurrentUpdatedProduct,
-    showCartModal
+    showCartModal,
+    setShowCartModal,
   } = useContext(GlobalContext);
-  const { user, isAuthUser, setIsAuthUser, setUser } =
-    useContext(GlobalContext);
 
   const router = useRouter();
   const pathName = usePathname();
@@ -64,8 +66,8 @@ export default function Navbar() {
     if (
       pathName !== "/admin-view/add-product" &&
       currentUpdatedProduct !== null
-    )  setCurrentUpdatedProduct(null);
-    
+    )
+      setCurrentUpdatedProduct(null);
   }, [pathName]);
 
   function handleLogout() {
@@ -98,7 +100,10 @@ export default function Navbar() {
                 >
                   Account
                 </button>
-                <button className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={() => setShowCartModal(true)}
+                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
                   Cart
                 </button>
               </Fragment>
@@ -174,7 +179,7 @@ export default function Navbar() {
         show={showNavModal}
         setShow={setShowNavModal}
       />
-      {showCartModal && <CartModal   />}
+      {showCartModal && <CartModal />}
     </>
   );
 }

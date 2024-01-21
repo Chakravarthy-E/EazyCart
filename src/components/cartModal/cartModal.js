@@ -6,6 +6,7 @@ import { GlobalContext } from "@/context";
 import { deleteFromCart, getAllCartItems } from "@/services/cart/cart";
 import { toast } from "react-toastify";
 import DotLoader from "../DotLoader/DotLoader";
+import { useRouter } from "next/navigation";
 export default function CartModal() {
   const {
     showCartModal,
@@ -28,6 +29,7 @@ export default function CartModal() {
     if (user !== null) extractAllCartItems();
   }, [user]);
 
+  const router = useRouter();
   const handleDeleteCartItem = async (getCartItemID) => {
     setcomponentLabelLoader({ loading: true, id: getCartItemID });
     const response = await deleteFromCart(getCartItemID);
@@ -109,6 +111,7 @@ export default function CartModal() {
           <button
             type="button"
             className=" mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            onClick={() => router.push("/cart")}
           >
             Go To Cart
           </button>
