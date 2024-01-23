@@ -1,6 +1,42 @@
 "use client";
 
+import { GlobalContext } from "@/context";
+import { useContext } from "react";
+import { toast } from "react-toastify";
+import ComponentLabelLoader from "../loader/componentLabel";
+import { addToCart } from "@/services/cart/cart";
+import Notification from "../notification/notication";
+
 export default function CommonDetails({ item }) {
+  const {
+    setcomponentLabelLoader,
+    setShowCartModal,
+    user,
+    componentLabelLoader,
+  } = useContext(GlobalContext);
+
+  const handleAddToCart = async (getItem) => {
+    setcomponentLabelLoader({ loading: true, id: "" });
+
+    const response = await addToCart({
+      productID: getItem._id,
+      userID: user._id,
+    });
+
+    if (response.success) {
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setcomponentLabelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    } else {
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setcomponentLabelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    }
+  };
   return (
     <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-6 ">
       <div className="container mx-auto px-4">
@@ -75,8 +111,19 @@ export default function CommonDetails({ item }) {
               <button
                 type="button"
                 className=" mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium tracking-wide uppercase text-white"
+                onClick={() => handleAddToCart(item)}
               >
-                Add To Cart
+                {componentLabelLoader && componentLabelLoader.loading ? (
+                  <ComponentLabelLoader
+                    text={"Adding to Cart"}
+                    color={"#FFFFF"}
+                    loading={
+                      componentLabelLoader && componentLabelLoader.loading
+                    }
+                  />
+                ) : (
+                  "  Add To Cart"
+                )}
               </button>
             </div>
             <ul className="mt-8 space-y-2">
@@ -105,6 +152,7 @@ export default function CommonDetails({ item }) {
           </div>
         </div>
       </div>
+      <Notification />
     </section>
   );
 }
