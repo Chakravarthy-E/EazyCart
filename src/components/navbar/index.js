@@ -17,14 +17,14 @@ function NavItems({ isModalView = false, isAdminView, router }) {
       id="nav-items"
     >
       <ul
-        className={`flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${
-          isModalView ? "border-none" : "border border-gray-100"
+        className={`flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 ${
+          isModalView ? "border-none" : " "
         }`}
       >
         {isAdminView
           ? adminNavOptions.map((item) => (
               <li
-                className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 cursor-pointer rounded md:p-0"
+                className="curser-pointer block py-2 pl-3 pr-4 hover:text-blue-500  cursor-pointer rounded md:p-0"
                 key={item.id}
                 onClick={() => router.push(item.path)}
               >
@@ -33,7 +33,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
             ))
           : navOptions.map((item) => (
               <li
-                className="curser-pointer block py-2 pl-3 pr-4 text-gray-900 cursor-pointer rounded md:p-0"
+                className="curser-pointer block py-2 pl-3 pr-4 hover:text-blue-500 cursor-pointer rounded md:p-0"
                 key={item.id}
                 onClick={() => router.push(item.path)}
               >
@@ -81,7 +81,7 @@ export default function Navbar() {
   const isAdminView = pathName.includes("admin-view");
   return (
     <>
-      <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+      <nav className=" dark:bg-black border-b bg-white fixed w-full z-50 top-0 left-0 ">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div
             className="flex items-center cursor-pointer"
@@ -95,14 +95,14 @@ export default function Navbar() {
             {!isAdminView && isAuthUser ? (
               <Fragment>
                 <button
-                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/account")}
                 >
                   Account
                 </button>
                 <button
                   onClick={() => setShowCartModal(true)}
-                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                 >
                   Cart
                 </button>
@@ -111,14 +111,14 @@ export default function Navbar() {
             {user?.role === "admin" ? (
               isAdminView ? (
                 <button
-                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/")}
                 >
                   Client View
                 </button>
               ) : (
                 <button
-                  className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/admin-view")}
                 >
                   Admin View
@@ -128,14 +128,14 @@ export default function Navbar() {
             {isAuthUser ? (
               <button
                 onClick={handleLogout}
-                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
               >
                 Logout
               </button>
             ) : (
               <button
                 onClick={() => router.push("/login")}
-                className="bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
               >
                 Login
               </button>

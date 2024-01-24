@@ -9,10 +9,10 @@ export default function CommonCart({
   componentLabelLoader,
 }) {
   return (
-    <section className=" h-screen bg-gray-100">
+    <section className=" h-screen ">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <div className=" bg-white shadow">
+          <div className="  shadow">
             <div className="px-4 py-6 sm:px-8 sm:py-10">
               <div className=" flow-root">
                 {cartItems && cartItems.length ? (
@@ -74,10 +74,10 @@ export default function CommonCart({
                   </h1>
                 )}
               </div>
-              <div className="mt-6  border-t border-b py-2">
+              <div className="mt-6  border-t border-b py-2 dark:text-white">
                 <div className=" flex items-center justify-between">
                   <p className=" text-sm text-gray-400">Subtotal</p>
-                  <p className="text-lg text-black font-semibold">
+                  <p className="text-lg  font-semibold">
                     $
                     {cartItems && cartItems.length
                       ? cartItems.reduce(
@@ -89,12 +89,12 @@ export default function CommonCart({
                 </div>
                 <div className=" flex items-center justify-between">
                   <p className=" text-sm text-gray-400">Shipping</p>
-                  <p className="text-lg text-black font-semibold">$0</p>
+                  <p className="text-lgfont-semibold">$0</p>
                 </div>
 
                 <div className=" flex items-center justify-between">
                   <p className=" text-sm text-gray-400">Total</p>
-                  <p className="text-lg text-black font-semibold">
+                  <p className="text-lg  font-semibold">
                     $
                     {cartItems && cartItems.length
                       ? cartItems.reduce(

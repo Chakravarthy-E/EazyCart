@@ -69,7 +69,7 @@ export default function CartModal() {
                 </div>
                 <div className="ml-4 flex flex-1 flex-col">
                   <div>
-                    <div className="flex justify-between text-base font-medium text-gray-900">
+                    <div className="flex justify-between text-base font-medium dark:text-white">
                       <h3>
                         <a>
                           {cartItem &&
@@ -110,7 +110,7 @@ export default function CartModal() {
         <Fragment>
           <button
             type="button"
-            className=" mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            className=" mt-1.5 w-full inline-block dark:bg-gray-950 dark:text-white: bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
             onClick={() => {
               router.push("/cart");
               setShowCartModal(false);
