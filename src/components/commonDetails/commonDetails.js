@@ -79,7 +79,7 @@ export default function CommonDetails({ item }) {
             </div>
           </div>
           <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold dark:text-white text-gray-900">
               {item && item.name}
             </h1>
 
@@ -139,7 +139,7 @@ export default function CommonDetails({ item }) {
                 <nav className="flex gap-4">
                   <a
                     href="#"
-                    className="border-b-2 border-gray-900 py-4 text-sm font-medium text-gray-950"
+                    className="border-b-2 border-gray-900 py-4 text-sm dark:text-white font-medium text-gray-950"
                   >
                     Description
                   </a>

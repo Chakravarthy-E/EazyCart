@@ -13,7 +13,7 @@ export default function SelectComponent({
         value={value}
         onChange={onChange}
         className="border placeholder:gray-500 focus:outline-none rounded-lg focus:border-black w-full pt-4 pr-4 pb-4 pl4
-      mr-0 mt-0 ml-0 text-base block bg-white border-gray-300"
+      mr-0 mt-0 ml-0 text-base block  border-gray-300"
       >
         {options && options.length ? (
           options.map((optionItem) => (

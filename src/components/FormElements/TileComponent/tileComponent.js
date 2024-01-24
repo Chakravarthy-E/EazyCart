@@ -18,9 +18,9 @@ export default function TileComponent({ data, selected = [], onClick }) {
               selected &&
               selected.length &&
               selected.map((item) => item.id).indexOf(dataItem.id) !== -1
-                ? "text-white bg-black"
-                : ""
-            } rounded-lg border border-black px-6 py-2 font-bold`}
+                ? "text-white bg-black dark:bg-blue-500 "
+                : " "
+            } rounded-lg border border-black px-6 py-2 dark:bg-white dark:text-black font-bold`}
           >
             {dataItem.label}
           </span>
