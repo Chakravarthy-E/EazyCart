@@ -36,7 +36,7 @@ export default function CommonCart({
                         <div className="flex flex-1 flex-col justify-between">
                           <div className="sm:col-gap-6 sm:grid sm:grid-cols-2">
                             <div className=" pr-8 sm:pr-4">
-                              <p className="text-base font-semibold text-gray-900">
+                              <p className="text-base font-semibold dark:text-white text-gray-900">
                                 {cartItem &&
                                   cartItem.productID &&
                                   cartItem.productID.name}
@@ -44,7 +44,7 @@ export default function CommonCart({
                             </div>
                           </div>
                           <div className="mt-4 gap-3 items-end justify-between flex sm:mt-0 sm:items-start sm:justify-end">
-                            <p className="shrink-0 w-20 font-semibold text-base text-gray-800 sm:order-1 sm:ml-8">
+                            <p className="shrink-0 w-20 font-semibold text-base dark:text-white text-gray-800 sm:order-1 sm:ml-8">
                               $
                               {cartItem &&
                                 cartItem.productID &&

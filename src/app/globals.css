@@ -68,3 +68,7 @@ body::-webkit-scrollbar-thumb {
     --ring: 224.3 76.3% 48%;
   }
 }
+
+.button {
+  @apply mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white;
+}
