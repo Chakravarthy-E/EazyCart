@@ -1,15 +1,112 @@
 "use client";
 
 import InputComponent from "@/components/FormElements/inputComponent";
+import ComponentLabelLoader from "@/components/loader/componentLabel";
+import Notification from "@/components/notification/notication";
 import { GlobalContext } from "@/context";
+import {
+  addNewAddress,
+  deleteAddress,
+  fetchAllAddresses,
+  updateAddress,
+} from "@/services/address/address";
 import { addNewAddressFormControls, styles } from "@/utils";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Account() {
-  const { user, addresses, setAddresses, addressFormData, setAddressFormData } =
-    useContext(GlobalContext);
+  const {
+    user,
+    addresses,
+    setAddresses,
+    addressFormData,
+    setAddressFormData,
+    componentLabelLoader,
+    setcomponentLabelLoader,
+  } = useContext(GlobalContext);
 
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [currentEditedAddressId, setCurrentEditedAddressId] = useState(null);
+
+  const extractAllAddress = async () => {
+    const response = await fetchAllAddresses(user?._id);
+    if (response.success) {
+      setAddresses(response.data);
+    }
+  };
+
+  const handleAddOrUpdateAddress = async () => {
+    setcomponentLabelLoader({ loading: true, id: "" });
+    const response =
+      currentEditedAddressId !== null
+        ? await updateAddress({
+            ...addressFormData,
+            _id: currentEditedAddressId,
+          })
+        : await addNewAddress({
+            ...addressFormData,
+            userID: user?._id,
+          });
+    if (response.success) {
+      setcomponentLabelLoader({ loading: false, id: "" });
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setAddressFormData({
+        fullName: "",
+        city: "",
+        country: "",
+        postalCode: "",
+        address: "",
+      });
+      extractAllAddress();
+      setCurrentEditedAddressId(null);
+    } else {
+      setcomponentLabelLoader({ loading: false, id: "" });
+      toast.error(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setAddressFormData({
+        fullName: "",
+        city: "",
+        country: "",
+        postalCode: "",
+        address: "",
+      });
+    }
+  };
+
+  const handleUpdateAddress = async (getCurrentAddress) => {
+    setShowAddressForm(true);
+    setAddressFormData({
+      fullName: getCurrentAddress.fullName,
+      city: getCurrentAddress.city,
+      country: getCurrentAddress.country,
+      postalCode: getCurrentAddress.postalCode,
+      address: getCurrentAddress.address,
+    });
+    setCurrentEditedAddressId(getCurrentAddress._id);
+  };
+
+  const handleDeleteAddress = async (getCurrentAddressID) => {
+    setcomponentLabelLoader({ loading: true, id: getCurrentAddressID });
+    const response = await deleteAddress(getCurrentAddressID);
+    if (response.success) {
+      setcomponentLabelLoader({ loading: false, id: "" });
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      extractAllAddress();
+    } else {
+      setcomponentLabelLoader({ loading: false, id: "" });
+      toast.error(response.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+  useEffect(() => {
+    if (user !== null) extractAllAddress();
+  }, [user]);
   return (
     <section>
       <div className=" mx-auto  px-4 sm:px-6 lg:px-8">
@@ -27,7 +124,7 @@ export default function Account() {
             <button className={styles.button}>View Your Orders</button>
             <div className=" mt-6 ">
               <h1 className=" font-bold text-lg">Your Addressess:</h1>
-              <div className="mt-4">
+              <div className="mt-4 flex flex-col gap-4">
                 {addresses && addresses.length ? (
                   addresses.map((item) => (
                     <div className="border p-6 " key={item._id}>
@@ -36,9 +133,33 @@ export default function Account() {
                       <p>Country:{item.country}</p>
                       <p>PostalCode:{item.postalCode}</p>
                       <p>Address:{item.address}</p>
-
-                      <button className="button">Update</button>
-                      <button className="button">Delete</button>
+                      <div className=" space-x-2">
+                        <button
+                          onClick={() => handleUpdateAddress(item)}
+                          className="button"
+                        >
+                          Update
+                        </button>
+                        <button
+                          onClick={() => handleDeleteAddress(item._id)}
+                          className="button"
+                        >
+                          {componentLabelLoader &&
+                          componentLabelLoader.loading &&
+                          componentLabelLoader.id === item._id ? (
+                            <ComponentLabelLoader
+                              text={"Deleting"}
+                              color={"#FFFFF"}
+                              loading={
+                                componentLabelLoader &&
+                                componentLabelLoader.loading
+                              }
+                            />
+                          ) : (
+                            "Delete"
+                          )}
+                        </button>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -73,13 +194,26 @@ export default function Account() {
                   ))}
                 </div>
                 <div className="mt-4">
-                  <button className="button">Save</button>
+                  <button className="button" onClick={handleAddOrUpdateAddress}>
+                    {componentLabelLoader && componentLabelLoader.loading ? (
+                      <ComponentLabelLoader
+                        text={"Saving"}
+                        color={"#FFFFF"}
+                        loading={
+                          componentLabelLoader && componentLabelLoader.loading
+                        }
+                      />
+                    ) : (
+                      "Save"
+                    )}
+                  </button>
                 </div>
               </div>
             ) : null}
           </div>
         </div>
       </div>
+      <Notification />
     </section>
   );
 }

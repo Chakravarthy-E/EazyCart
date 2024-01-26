@@ -7,12 +7,12 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 const AddNewAddress = Joi.object({
-  fullName: Joi.string().regex(),
-  address: Joi.string().regex(),
-  city: Joi.string().regex(),
-  country: Joi.string().regex(),
-  postalCode: Joi.string().regex(),
-  userID: Joi.string().regex(),
+  fullName: Joi.string().required(),
+  address: Joi.string().required(),
+  city: Joi.string().required(),
+  country: Joi.string().required(),
+  postalCode: Joi.string().required(),
+  userID: Joi.string().required(),
 });
 
 export async function POST(req) {
