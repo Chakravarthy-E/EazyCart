@@ -1,7 +1,7 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Cart from "@/models/cart";
-import Joi, { string } from "joi";
+import Joi from "joi";
 import { NextResponse } from "next/server";
 
 const AddToCart = Joi.object({

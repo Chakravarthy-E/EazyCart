@@ -1,13 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import DotLoader from "../DotLoader/DotLoader";
-import ComponentLabelLoader from "../loader/componentLabel";
 
 export default function CommonCart({
   cartItems = [],
   handleDeleteCartItem,
   componentLabelLoader,
 }) {
+  const router = useRouter();
   return (
     <section className=" h-screen ">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">

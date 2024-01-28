@@ -81,7 +81,7 @@ export default function Navbar() {
   const isAdminView = pathName.includes("admin-view");
   return (
     <>
-      <nav className=" dark:bg-black border-b bg-white fixed w-full z-50 top-0 left-0 ">
+      <nav className=" dark:bg-black  bg-white fixed w-full z-50 top-0 left-0 ">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div
             className="flex items-center cursor-pointer"
