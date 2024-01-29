@@ -108,7 +108,8 @@ export default function CommonCart({
                 <div className="mt-5 text-center">
                   <button
                     disabled={cartItems && cartItems.length === 0}
-                    className=" disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black text-white px-6 py-4 text-lg font-medium uppercase"
+                    onClick={() => router.push("/checkout")}
+                    className=" disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black dark:bg-white dark:text-black hover:text-blue-600 text-white px-6 py-1 text-lg font-medium uppercase"
                   >
                     Checkout
                   </button>

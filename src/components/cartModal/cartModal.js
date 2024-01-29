@@ -78,7 +78,7 @@ export default function CartModal() {
                         </a>
                       </h3>
                     </div>
-                    <p className="mt-1 text-sm text-gray-600">
+                    <p className="mt-1 text-sm dark:text-gray-400 text-gray-600">
                       $
                       {cartItem &&
                         cartItem.productID &&
@@ -121,6 +121,10 @@ export default function CartModal() {
           <button
             disabled={cartitems && cartitems.length === 0}
             type="button"
+            onClick={() => {
+              router.push("/checkout");
+              setShowCartModal(false);
+            }}
             className=" mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50"
           >
             Checkout
