@@ -3,11 +3,18 @@
 import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address/address";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const Checkout = () => {
-  const { cartitems, user, addresses, setAddresses } =
-    useContext(GlobalContext);
+  const {
+    cartitems,
+    user,
+    addresses,
+    setAddresses,
+    checkoutFormData,
+    setCheckoutFormData,
+  } = useContext(GlobalContext);
+  const [selectedAddress, setSelectedAddress] = useState(null);
 
   const router = useRouter();
 
@@ -22,7 +29,31 @@ const Checkout = () => {
       getAllAddresses();
     }
   }, [user]);
-  console.log(addresses);
+
+  function handleSelectedAddress(getAddress) {
+    if (getAddress._id === selectedAddress) {
+      setSelectedAddress(null);
+      setCheckoutFormData({
+        ...checkoutFormData,
+        shippingAddress: {},
+      });
+      return;
+    }
+    setSelectedAddress(getAddress._id);
+    setCheckoutFormData({
+      ...checkoutFormData,
+      shippingAddress: {
+        ...checkoutFormData.shippingAddress,
+        fullName: getAddress.fullName,
+        city: getAddress.city,
+        country: getAddress.country,
+        postalCode: getAddress.postalCode,
+        address: getAddress.address,
+      },
+    });
+  }
+  console.log(checkoutFormData);
+
   return (
     <div>
       <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
@@ -60,12 +91,15 @@ const Checkout = () => {
           <p className=" text-xl font-bold dark:text-gray-400">
             Complete your order by selecting address below
           </p>
-          <div className="w-full mt-6 mr-0 ml-0 space-y-6">
+          <div className="w-full mt-1 mr-0 ml-0 space-y-6">
             {addresses && addresses.length ? (
               addresses.map((item) => (
                 <div
+                  onClick={() => handleSelectedAddress(item)}
                   key={item._id}
-                  className=" border p-6 rounded-lg tracking-normal"
+                  className={`border p-6 rounded-lg tracking-normal ${
+                    item._id === selectedAddress ? " border-blue-500" : ""
+                  }`}
                 >
                   <p>
                     Name:{" "}
@@ -91,7 +125,11 @@ const Checkout = () => {
                     <span className=" dark:text-gray-400"> {item.address}</span>
                   </p>
 
-                  <button className="button">Select Address</button>
+                  <button className="button">
+                    {item._id === selectedAddress
+                      ? " Selected"
+                      : " Select Address"}
+                  </button>
                 </div>
               ))
             ) : (
@@ -103,6 +141,45 @@ const Checkout = () => {
             className="button my-4"
           >
             Add new address
+          </button>
+          <div className="mt-6 border-t border-b py-2">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium dark:text-gray-400">SubTotal</p>
+              <p className="text-lg font-bold dark:text-gray-300">
+                ${" "}
+                {cartitems && cartitems.length
+                  ? cartitems.reduce(
+                      (total, item) => item.productID.price + total,
+                      0
+                    )
+                  : "0"}
+              </p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium dark:text-gray-400">Shipping</p>
+              <p className="text-lg font-bold dark:text-gray-300">Free</p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium dark:text-gray-400">Total</p>
+              <p className="text-lg font-bold dark:text-gray-300">
+                ${" "}
+                {cartitems && cartitems.length
+                  ? cartitems.reduce(
+                      (total, item) => item.productID.price + total,
+                      0
+                    )
+                  : "0"}
+              </p>
+            </div>
+          </div>
+          <button
+            disabled={
+              (cartitems && cartitems.length === 0) ||
+              Object.keys(checkoutFormData.shippingAddress).length === 0
+            }
+            className="button w-full disabled:opacity-50"
+          >
+            Checkout
           </button>
         </div>
       </div>
