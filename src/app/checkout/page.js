@@ -2,6 +2,8 @@
 
 import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address/address";
+import { callStripeSession } from "@/services/stripe/stripe";
+import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
@@ -15,8 +17,12 @@ const Checkout = () => {
     setCheckoutFormData,
   } = useContext(GlobalContext);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isOrderProcessing, setIsOrderProcessing] = useState(false);
 
   const router = useRouter();
+  const publishbleKey = process.env.NEXT_PUBLIC_PUBLISHABLE_KEY;
+  console.log(publishbleKey);
+  const stripePromise = loadStripe(publishbleKey);
 
   const getAllAddresses = async () => {
     const response = await fetchAllAddresses(user?._id);
@@ -52,7 +58,29 @@ const Checkout = () => {
       },
     });
   }
-  console.log(checkoutFormData);
+  // console.log(checkoutFormData);
+  const handleCheckout = async () => {
+    const stripe = await stripePromise;
+    const createLineItems = cartitems.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          images: [item.productID.imageUrl],
+          name: item.productID.name,
+        },
+        unit_amount: item.productID.price * 100,
+      },
+      quantity: 1,
+    }));
+    const response = await callStripeSession(createLineItems);
+    setIsOrderProcessing(true);
+    localStorage.setItem("stipe", true);
+    localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: response.id,
+    });
+    console.log(error);
+  };
 
   return (
     <div>
@@ -173,6 +201,7 @@ const Checkout = () => {
             </div>
           </div>
           <button
+            onClick={handleCheckout}
             disabled={
               (cartitems && cartitems.length === 0) ||
               Object.keys(checkoutFormData.shippingAddress).length === 0
