@@ -125,7 +125,7 @@ const Checkout = () => {
                 <div
                   onClick={() => handleSelectedAddress(item)}
                   key={item._id}
-                  className={`border p-6 rounded-lg tracking-normal ${
+                  className={`border p-6 rounded-lg cursor-pointer tracking-normal ${
                     item._id === selectedAddress ? " border-blue-500" : ""
                   }`}
                 >
