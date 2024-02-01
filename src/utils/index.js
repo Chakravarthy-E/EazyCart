@@ -189,15 +189,16 @@ export const AvailableSizes = [
 ];
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyDXvyVSUzTmv_XcI2TScdo-XKEpeY43ulw",
-  authDomain: "eazycart-d2030.firebaseapp.com",
-  projectId: "eazycart-d2030",
-  storageBucket: "eazycart-d2030.appspot.com",
-  messagingSenderId: "584338485873",
-  appId: "1:584338485873:web:4f09432f00a5a5256ce1d0",
-  measurementId: "G-WLZSVDQWGC",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId:process.env.NEXT_PUBLIC_FIREBASE_MESUREMENT_ID,
 };
-export const firebaseStroageURL = "gs://eazycart-d2030.appspot.com";
+export const firebaseStroageURL = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_URL;
+
 
 export const addNewAddressFormControls = [
   {

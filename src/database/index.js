@@ -5,8 +5,7 @@ const configOptions = {
   useUnifiedTopology: true,
 };
 const connectToDB = async () => {
-  const connectionUrl =
-    "mongodb+srv://chakravarthy:chakri123@cluster0.uyzauje.mongodb.net/";
+  const connectionUrl = process.env.NEXT_PUBLIC_DB;
 
   mongoose
     .connect(connectionUrl, configOptions)
