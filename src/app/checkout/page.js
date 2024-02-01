@@ -1,11 +1,15 @@
 "use client";
 
+import Notification from "@/components/notification/notication";
 import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address/address";
+import { createNewOrder } from "@/services/order/order";
 import { callStripeSession } from "@/services/stripe/stripe";
 import { loadStripe } from "@stripe/stripe-js";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { PulseLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 const Checkout = () => {
   const {
@@ -18,10 +22,11 @@ const Checkout = () => {
   } = useContext(GlobalContext);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isOrderProcessing, setIsOrderProcessing] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   const router = useRouter();
+  const params = useSearchParams();
   const publishbleKey = process.env.NEXT_PUBLIC_PUBLISHABLE_KEY;
-  console.log(publishbleKey);
   const stripePromise = loadStripe(publishbleKey);
 
   const getAllAddresses = async () => {
@@ -35,6 +40,54 @@ const Checkout = () => {
       getAllAddresses();
     }
   }, [user]);
+
+  useEffect(() => {
+    async function createFinalOrder() {
+      const isStripe = JSON.parse(localStorage.getItem("stripe"));
+      if (
+        isStripe &&
+        params.get("status") === "success" &&
+        cartitems &&
+        cartitems.length > 0
+      ) {
+        setIsOrderProcessing(true);
+        const getCheckoutFormData = JSON.parse(
+          localStorage.getItem("checkoutFormData")
+        );
+        const createFinalCheckoutFormData = {
+          user: user?._id,
+          shippingAddress: getCheckoutFormData.shippingAddress,
+          orderItems: cartitems.map((item) => ({
+            qty: 1,
+            product: item.productID,
+          })),
+          paymentMethod: "stripe",
+          totalPrice: cartitems.reduce(
+            (total, item) => item.productID.price + total,
+            0
+          ),
+          isPaid: true,
+          isProcessing: true,
+          paidAt: new Date(),
+        };
+        const res = await createNewOrder(createFinalCheckoutFormData);
+        if (res.success) {
+          setIsOrderProcessing(false);
+          setOrderSuccess(true);
+          toast.success(res.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        } else {
+          setIsOrderProcessing(false);
+          setOrderSuccess(false);
+          toast.error(res.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      }
+    }
+    createFinalOrder();
+  }, [params.get("status"), cartitems]);
 
   function handleSelectedAddress(getAddress) {
     if (getAddress._id === selectedAddress) {
@@ -63,7 +116,7 @@ const Checkout = () => {
     const stripe = await stripePromise;
     const createLineItems = cartitems.map((item) => ({
       price_data: {
-        currency: "usd",
+        currency: "inr",
         product_data: {
           images: [item.productID.imageUrl],
           name: item.productID.name,
@@ -74,12 +127,44 @@ const Checkout = () => {
     }));
     const response = await callStripeSession(createLineItems);
     setIsOrderProcessing(true);
-    localStorage.setItem("stipe", true);
+    localStorage.setItem("stripe", true);
     localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
     const { error } = await stripe.redirectToCheckout({
       sessionId: response.id,
     });
     console.log(error);
+    if (orderSuccess) {
+      return (
+        <section className=" h-screen ">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto mt-8 max-w-screen-xl px-4  sm:px-6 lg:px-8">
+              <div className="shadow ">
+                <div className=" px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
+                  <h1 className=" font-bold text-lg">
+                    Your payment is successfull
+                  </h1>
+                  <button className="button w-full disabled:opacity-50">
+                    View your orders
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+    if (isOrderProcessing) {
+      return (
+        <div className=" w-full min-h-screen flex justify-center items-center">
+          <PulseLoader
+            color="#00000"
+            loading={isOrderProcessing}
+            size={30}
+            data-testid="loader"
+          />
+        </div>
+      );
+    }
   };
 
   return (
@@ -212,6 +297,7 @@ const Checkout = () => {
           </button>
         </div>
       </div>
+      <Notification />
     </div>
   );
 };
