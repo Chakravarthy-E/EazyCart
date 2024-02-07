@@ -61,7 +61,7 @@ const Checkout = () => {
             qty: 1,
             product: item.productID,
           })),
-          paymentMethod: "stripe",
+          paymentMethod: "Stripe",
           totalPrice: cartitems.reduce(
             (total, item) => item.productID.price + total,
             0
@@ -133,39 +133,46 @@ const Checkout = () => {
       sessionId: response.id,
     });
     console.log(error);
+  };
+
+  useEffect(() => {
     if (orderSuccess) {
-      return (
-        <section className=" h-screen ">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto mt-8 max-w-screen-xl px-4  sm:px-6 lg:px-8">
-              <div className="shadow ">
-                <div className=" px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
-                  <h1 className=" font-bold text-lg">
-                    Your payment is successfull
-                  </h1>
-                  <button className="button w-full disabled:opacity-50">
-                    View your orders
-                  </button>
-                </div>
+      setTimeout(() => {
+        router.push("/orders");
+      }, 2000);
+    }
+  });
+
+  if (orderSuccess) {
+    return (
+      <section className=" h-screen ">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mt-8 max-w-screen-xl px-4  sm:px-6 lg:px-8">
+            <div className="shadow ">
+              <div className=" px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
+                <h1 className=" font-bold text-lg">
+                  Your payment is successfull and you will be redirected to
+                  orders page in 3 seconds!
+                </h1>
               </div>
             </div>
           </div>
-        </section>
-      );
-    }
-    if (isOrderProcessing) {
-      return (
-        <div className=" w-full min-h-screen flex justify-center items-center">
-          <PulseLoader
-            color="#00000"
-            loading={isOrderProcessing}
-            size={30}
-            data-testid="loader"
-          />
         </div>
-      );
-    }
-  };
+      </section>
+    );
+  }
+  if (isOrderProcessing) {
+    return (
+      <div className=" w-full min-h-screen flex justify-center items-center">
+        <PulseLoader
+          color="#00000"
+          loading={isOrderProcessing}
+          size={30}
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -26,7 +26,7 @@ const OrderSchema = new mongoose.Schema(
     paymentMethod: {
       type: String,
       required: true,
-      default: "stripe",
+      default: "Stripe",
     },
     totalPrice: { type: Number, required: true },
     isPaid: { type: Boolean, required: true },
