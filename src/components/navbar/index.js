@@ -7,6 +7,11 @@ import CommonModel from "../commonModel";
 import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 import CartModal from "../cartModal/cartModal";
+import { VscAccount } from "react-icons/vsc";
+import { FiShoppingCart } from "react-icons/fi";
+import { MdAdminPanelSettings } from "react-icons/md";
+import { LuLogOut } from "react-icons/lu";
+import { CiLogin } from "react-icons/ci";
 
 function NavItems({ isModalView = false, isAdminView, router }) {
   return (
@@ -26,6 +31,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
               <li
                 className="curser-pointer block py-2 pl-3 pr-4 hover:text-blue-500  cursor-pointer rounded md:p-0"
                 key={item.id}
+                title={item.id}
                 onClick={() => router.push(item.path)}
               >
                 {item.label}
@@ -95,22 +101,25 @@ export default function Navbar() {
             {!isAdminView && isAuthUser ? (
               <Fragment>
                 <button
+                  title="Profile"
                   className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/account")}
                 >
-                  Account
+                  <VscAccount size={25} />
                 </button>
                 <button
+                  title="Cart"
                   onClick={() => setShowCartModal(true)}
                   className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                 >
-                  Cart
+                  <FiShoppingCart size={25} />
                 </button>
               </Fragment>
             ) : null}
             {user?.role === "admin" ? (
               isAdminView ? (
                 <button
+                  title="Client View"
                   className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/")}
                 >
@@ -118,26 +127,29 @@ export default function Navbar() {
                 </button>
               ) : (
                 <button
+                  title="Admin View"
                   className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/admin-view")}
                 >
-                  Admin View
+                  <MdAdminPanelSettings size={35} />
                 </button>
               )
             ) : null}
             {isAuthUser ? (
               <button
+                title="Logout"
                 onClick={handleLogout}
                 className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
               >
-                Logout
+                <LuLogOut size={30} />
               </button>
             ) : (
               <button
+                title="Login"
                 onClick={() => router.push("/login")}
                 className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
               >
-                Login
+                <CiLogin size={30} />
               </button>
             )}
             <button
