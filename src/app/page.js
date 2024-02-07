@@ -1,7 +1,9 @@
+import Landing from "@/components/atoms/Landing/Landing";
+
 export default function Home() {
   return (
     <main className="">
-      <h2>Hello world</h2>
+      <Landing />
     </main>
   );
 }
