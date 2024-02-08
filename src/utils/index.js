@@ -1,7 +1,11 @@
+import { IoManSharp, IoWoman, IoHome } from "react-icons/io5";
+import { TbMoodKid } from "react-icons/tb";
+
+
 export const navOptions = [
   {
     id: "home",
-    label: "Home",
+    label: <IoHome size={25} />,
     path: "/",
   },
   {
@@ -11,17 +15,17 @@ export const navOptions = [
   },
   {
     id: "listingMen",
-    label: "Men",
+    label: <IoManSharp size={25} />,
     path: "/product/listing/men",
   },
   {
     id: "listingWomen",
-    label: "Women",
+    label: <IoWoman size={25} />,
     path: "/product/listing/women",
   },
   {
     id: "listingKids",
-    label: "kids",
+    label: <TbMoodKid size={25} />,
     path: "/product/listing/kids",
   },
 ];
@@ -195,10 +199,9 @@ export const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGE_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId:process.env.NEXT_PUBLIC_FIREBASE_MESUREMENT_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MESUREMENT_ID,
 };
 export const firebaseStroageURL = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_URL;
-
 
 export const addNewAddressFormControls = [
   {

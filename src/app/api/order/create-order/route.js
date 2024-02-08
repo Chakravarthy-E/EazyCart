@@ -20,7 +20,7 @@ export async function POST(req) {
         });
         return NextResponse.json({
           success: true,
-          message: "Products  are on the way",
+          message: "Products are on the way",
         });
       } else {
         return NextResponse.json({
