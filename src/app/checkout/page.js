@@ -137,11 +137,9 @@ const Checkout = () => {
 
   useEffect(() => {
     if (orderSuccess) {
-      setTimeout(() => {
-        router.push("/orders");
-      }, 2000);
+      router.push("/orders");
     }
-  });
+  }, [orderSuccess]);
 
   if (orderSuccess) {
     return (
