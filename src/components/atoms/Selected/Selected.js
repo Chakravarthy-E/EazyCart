@@ -8,8 +8,8 @@ export async function Selected() {
   const getAllProducts = await getAllAdminProducts();
   const data = getAllProducts && getAllProducts.data;
   return (
-    <div className=" py-6 sm:py-8 lg:py-12">
-      <div className="mx-auto max-w-screen-2xl px-4 md:px-8 min-h-screen">
+    <div className=" py-6 sm:py-8 lg:py-12 min-h-screen">
+      <div className="mx-auto max-w-screen-2xl px-4 md:px-8 ">
         <div className="mb-10 md:mb-16">
           <h2 className="mb-4 text-center text-2xl font-bold dark:text-white text-gray-800 md:mb-6 lg:text-3xl">
             Selected
