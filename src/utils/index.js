@@ -1,7 +1,6 @@
 import { IoManSharp, IoWoman, IoHome } from "react-icons/io5";
 import { TbMoodKid } from "react-icons/tb";
 
-
 export const navOptions = [
   {
     id: "home",
@@ -15,17 +14,17 @@ export const navOptions = [
   },
   {
     id: "listingMen",
-    label: <IoManSharp size={25} />,
+    label: "Men",
     path: "/product/listing/men",
   },
   {
     id: "listingWomen",
-    label: <IoWoman size={25} />,
+    label: "Women",
     path: "/product/listing/women",
   },
   {
     id: "listingKids",
-    label: <TbMoodKid size={25} />,
+    label: "Kids",
     path: "/product/listing/kids",
   },
 ];
