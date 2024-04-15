@@ -8,13 +8,13 @@ export default function Landing() {
       <section className="mx-auto max-w-screen-2xl px-4 md:px-8">
         <div className="mb-8 flex flex-wrap justify-between md:mb-16">
           <div className="mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0 lg:w-1/3 lg:pb-24 lg:pt-48">
-            <h1 className="mb-4 text-4xl font-bold dark:text-white text-black sm:text-5xl md:mb-8 md:text-6xl">
+            <h1 className="mb-4 text-4xl font-bold  text-black sm:text-5xl md:mb-8 md:text-6xl">
               Find your
               <br />
               style online
             </h1>
 
-            <p className="max-w-md leading-relaxed text-gray-500 xl:text-lg">
+            <p className="max-w-md leading-relaxed xl:text-lg">
               This is a section of some simple filler text, also known as
               placeholder text. It shares characteristics of real text.
             </p>

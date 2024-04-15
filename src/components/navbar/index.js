@@ -87,7 +87,7 @@ export default function Navbar() {
   const isAdminView = pathName.includes("admin-view");
   return (
     <>
-      <nav className=" dark:bg-black  bg-white fixed w-full z-50 top-0 left-0 ">
+      <nav className=" bg-gray-200 fixed w-full z-50 top-0 left-0 ">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div
             className="flex items-center cursor-pointer"
@@ -102,7 +102,7 @@ export default function Navbar() {
               <Fragment>
                 <button
                   title="Profile"
-                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500 font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/account")}
                 >
                   <VscAccount size={25} />
@@ -110,7 +110,7 @@ export default function Navbar() {
                 <button
                   title="Cart"
                   onClick={() => setShowCartModal(true)}
-                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500  font-bold py-2 px-4 rounded"
                 >
                   <FiShoppingCart size={25} />
                 </button>
@@ -120,7 +120,7 @@ export default function Navbar() {
               isAdminView ? (
                 <button
                   title="Client View"
-                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500  font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/")}
                 >
                   Client View
@@ -128,7 +128,7 @@ export default function Navbar() {
               ) : (
                 <button
                   title="Admin View"
-                  className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
+                  className=" hover:text-blue-500  font-bold py-2 px-4 rounded"
                   onClick={() => router.push("/admin-view")}
                 >
                   <MdAdminPanelSettings size={35} />
@@ -139,7 +139,7 @@ export default function Navbar() {
               <button
                 title="Logout"
                 onClick={handleLogout}
-                className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
+                className=" hover:text-blue-500  font-bold py-2 px-4 rounded"
               >
                 <LuLogOut size={30} />
               </button>
@@ -147,7 +147,7 @@ export default function Navbar() {
               <button
                 title="Login"
                 onClick={() => router.push("/login")}
-                className=" hover:text-blue-500 dark:text-white font-bold py-2 px-4 rounded"
+                className=" hover:text-blue-500  font-bold py-2 px-4 rounded"
               >
                 <CiLogin size={30} />
               </button>

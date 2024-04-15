@@ -37,7 +37,7 @@ export default function CommonCart({
                         <div className="flex flex-1 flex-col justify-between">
                           <div className="sm:col-gap-6 sm:grid sm:grid-cols-2">
                             <div className=" pr-8 sm:pr-4">
-                              <p className="text-base font-semibold dark:text-white text-gray-900">
+                              <p className="text-base font-semibold  text-gray-900">
                                 {cartItem &&
                                   cartItem.productID &&
                                   cartItem.productID.name}
@@ -45,7 +45,7 @@ export default function CommonCart({
                             </div>
                           </div>
                           <div className="mt-4 gap-3 items-end justify-between flex sm:mt-0 sm:items-start sm:justify-end">
-                            <p className="shrink-0 w-20 font-semibold text-base dark:text-white text-gray-800 sm:order-1 sm:ml-8">
+                            <p className="shrink-0 w-20 font-semibold text-base  text-gray-800 sm:order-1 sm:ml-8">
                               $
                               {cartItem &&
                                 cartItem.productID &&
@@ -75,9 +75,9 @@ export default function CommonCart({
                   </h1>
                 )}
               </div>
-              <div className="mt-6  border-t border-b py-2 dark:text-white">
+              <div className="mt-6  border-t border-b py-2 ">
                 <div className=" flex items-center justify-between">
-                  <p className=" text-sm text-gray-400">Subtotal</p>
+                  <p className=" text-sm text-gray-800">Subtotal</p>
                   <p className="text-lg  font-semibold">
                     $
                     {cartItems && cartItems.length
@@ -89,12 +89,12 @@ export default function CommonCart({
                   </p>
                 </div>
                 <div className=" flex items-center justify-between">
-                  <p className=" text-sm text-gray-400">Shipping</p>
+                  <p className=" text-sm text-gray-800">Shipping</p>
                   <p className="text-lgfont-semibold">$0</p>
                 </div>
 
                 <div className=" flex items-center justify-between">
-                  <p className=" text-sm text-gray-400">Total</p>
+                  <p className=" text-sm text-gray-800">Total</p>
                   <p className="text-lg  font-semibold">
                     $
                     {cartItems && cartItems.length
@@ -109,7 +109,7 @@ export default function CommonCart({
                   <button
                     disabled={cartItems && cartItems.length === 0}
                     onClick={() => router.push("/checkout")}
-                    className=" disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black dark:bg-white dark:text-black hover:text-blue-600 text-white px-6 py-1 text-lg font-medium uppercase"
+                    className=" disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black  hover:text-blue-600 text-white px-6 py-1 text-lg font-medium uppercase"
                   >
                     Checkout
                   </button>

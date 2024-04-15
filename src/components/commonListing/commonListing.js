@@ -19,11 +19,10 @@ export default function CommonListing({ data }) {
           {data && data.length
             ? data.map((item) => (
                 <article
-                  className=" relative flex flex-col overflow-hidden  dark:border dark:border-gray-700 cursor-pointer rounded-lg shadow-lg"
+                  className=" relative flex flex-col overflow-hidden   cursor-pointer rounded-lg shadow-lg"
                   key={item.id}
-                
                 >
-                  <ProductTile item={item}  />
+                  <ProductTile item={item} />
                   <ProductButton item={item} />
                 </article>
               ))
