@@ -11,11 +11,11 @@ export async function Selected() {
     <div className=" py-6 sm:py-8 lg:py-12 min-h-screen">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8 ">
         <div className="mb-10 md:mb-16">
-          <h2 className="mb-4 text-center text-2xl font-bold dark:text-white text-gray-800 md:mb-6 lg:text-3xl">
+          <h2 className="mb-4 text-center text-2xl font-bold  text-gray-800 md:mb-6 lg:text-3xl">
             Selected
           </h2>
 
-          <p className="mx-auto max-w-screen-md text-center  dark:text-white text-gray-500 md:text-lg">
+          <p className="mx-auto max-w-screen-md text-center   text-gray-500 md:text-lg">
             This is a section of some simple filler text, also known as
             placeholder text. It shares some characteristics of a real written
             text but is random or otherwise generated.
@@ -30,7 +30,7 @@ export async function Selected() {
                   key={item._id}
                   onClick={() => router.push(`/product/${item._id}`)}
                 >
-                  <div className="group relative cursor-pointer mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
+                  <div className="group relative cursor-pointer mb-2 block h-96 overflow-hidden rounded-lg  shadow-lg lg:mb-3">
                     <img
                       src={item.imageUrl}
                       loading="lazy"
@@ -48,13 +48,13 @@ export async function Selected() {
 
                   <div className="flex items-start justify-between gap-2 px-2">
                     <div className="flex flex-col">
-                      <p className="text-lg font-bold dark:text-white text-gray-800 transition duration-100 hover:text-gray-500 lg:text-xl">
+                      <p className="text-lg font-bold text-gray-800 transition duration-100 hover:text-gray-500 lg:text-xl">
                         {item.name}
                       </p>
                     </div>
 
                     <div className="flex flex-col items-end">
-                      <span className="font-bold dark:text-white text-gray-600 lg:text-lg">
+                      <span className="font-bold  text-gray-600 lg:text-lg">
                         {`$ ${item.price}`}
                       </span>
                       {item.onSale === "yes" ? (

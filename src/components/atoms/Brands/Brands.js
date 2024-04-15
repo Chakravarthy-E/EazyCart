@@ -3,11 +3,11 @@ export default function Brands() {
     <div class=" py-6 sm:py-8 lg:py-12">
       <div class="mx-auto max-w-screen-2xl px-4 md:px-8 min-h-screen items-center flex justify-center flex-col">
         <div class="mb-4 flex flex-col xl:flex-col items-center md:mb-8 lg:flex-row lg:justify-between space-y-3">
-          <h2 class="mb-2 text-center text-2xl font-bold dark:text-white text-gray-800 lg:mb-0 lg:text-3xl">
+          <h2 class="mb-2 text-center text-2xl font-bold  text-gray-800 lg:mb-0 lg:text-3xl">
             Trusted by the best
           </h2>
 
-          <p class="max-w-md text-center dark:text-white text-gray-400 lg:text-center">
+          <p class="max-w-md text-center  text-gray-700 lg:text-center">
             Filler text is dummy text which has no meaning however looks very
             similar to real text.
           </p>
